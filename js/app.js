@@ -19,22 +19,28 @@ AppState.prototype.instantiateProducts = function () {
 }
 
 AppState.prototype.saveToLocalStorage = function () {
-  const dataToStore = {allProductImages: state.allProducts}
+  const dataToStore = this.allProducts
   localStorage.setItem('allProducts', JSON.stringify(dataToStore) )
 }
 
 AppState.prototype.loadItems = function () {
-  const storedData= localStorage.getItem('allProducts');
-  if(storedData){
-    const parsedData = JSON.parse(storedData);
-    for (let i = 0; i < state.allProducts.length; i++) {
-      let p = parsedData.state.allProducts[i];
-      new Product(p.name, p.fileExtension);
-  
-  }
-  }
-  
   this.instantiateProducts();
+  const storedData= localStorage.getItem('allProducts');
+  const parsedData = JSON.parse(storedData);
+  if(storedData){
+    for (let i = 0; i < parsedData.length; i++) {
+      console.log(parsedData);
+      // let p = parsedData[i];
+      // new Product(p.name, p.fileExtension, p.timesClicked, p.timesShown);
+      let p = new Product(parsedData[i].name);
+      p.timesShown = parsedData[i].timesShown;
+      p.timesClicked = parsedData[i].timesClicked;
+  this.allProducts.push(p);
+  }
+  }
+  else{
+    this.instantiateProducts();
+  }
 }
 
 
